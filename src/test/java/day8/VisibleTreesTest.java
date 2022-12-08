@@ -20,7 +20,7 @@ class VisibleTreesTest {
     }
 
     @Test
-    void inputIsPuzzle_getVisibleTrees_16() {
+    void inputIsPuzzle_getVisibleTrees_1787() {
         VisibleTrees cut = new VisibleTrees();
         String input = """
                 011112220220323233332231343014141131140112421211413355234334024414242133303312210313023000021220102
