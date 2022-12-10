@@ -47,11 +47,12 @@ public class PaperRockScissors {
         }
         return GameResultEnum.LOSS;
     }
+
     private PaperRockerScissorSymbols getMyCardBasedOnResult(PaperRockerScissorSymbols opponentSymbol, GameResultEnum resultToAchieve) {
         if (resultToAchieve == GameResultEnum.DRAW) {
             return opponentSymbol;
         }
-        if(resultToAchieve == GameResultEnum.WIN){
+        if (resultToAchieve == GameResultEnum.WIN) {
             return WORSE_THAN.get(opponentSymbol);
         }
         return BETTER_THAN.get(opponentSymbol);

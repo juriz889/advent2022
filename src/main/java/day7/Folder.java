@@ -2,7 +2,6 @@ package day7;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class Folder implements DirectoryItem {
     private final String name;

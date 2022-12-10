@@ -15,7 +15,7 @@ public class SpaceFreeUpForUpdateVisitor implements DirectoryItemVisitor<Folder>
     @Override
     public Folder visit(Folder folder) {
         for (DirectoryItem file : folder.getFiles()) {
-           file.accept(this);
+            file.accept(this);
         }
         if (folder.getSize() >= spaceToFreeUp) {
             if (smallestFolderToDelete != null && smallestFolderToDelete.getSize() > folder.getSize()) {

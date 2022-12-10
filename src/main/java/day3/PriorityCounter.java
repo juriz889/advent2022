@@ -53,7 +53,7 @@ public class PriorityCounter {
         int sum = 0;
         for (Set<Character> characters : uniqueCharacterOnEachLine) {
             if ((i + 1) % 3 == 0) {
-                System.out.println("Proccessing line "+ characters);
+                System.out.println("Proccessing line " + characters);
                 for (Character c : characters) {
                     if (uniqueCharacterOnEachLine.get(i - 1).contains(c) && uniqueCharacterOnEachLine.get(i - 2).contains(c)) {
                         System.out.println("Found character " + c);
