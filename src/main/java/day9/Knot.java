@@ -7,6 +7,8 @@ public class Knot {
     private CoordinatesData coordinatesData;
     private final Set<CoordinatesData> visited = new HashSet<>();
     private final String name;
+    private int lastX;
+    private int lastY;
 
     public Knot(CoordinatesData coordinatesData, String name) {
         this.setCoordinatesData(coordinatesData);
@@ -35,7 +37,19 @@ public class Knot {
 
     private void setCoordinatesData(CoordinatesData coordinatesData) {
         visited.add(coordinatesData);
+        if (this.coordinatesData != null) {
+            lastX = this.coordinatesData.getX();
+            lastY = this.coordinatesData.getY();
+        }
         this.coordinatesData = coordinatesData;
+    }
+
+    public int getLastX() {
+        return lastX;
+    }
+
+    public int getLastY() {
+        return lastY;
     }
 
     @Override

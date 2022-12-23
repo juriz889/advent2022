@@ -6,14 +6,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RopeSimulatorMultiTails {
-    private Pattern DIRECTION_WITH_COUNT = Pattern.compile("^(\\S) (\\d+)");
+    private final Pattern DIRECTION_WITH_COUNT = Pattern.compile("^(\\S) (\\d+)");
 
     public int getTailMovementCount(String input) {
-        Knot head = new Knot(new CoordinatesData(0, 5), "head");
+        Knot head = new Knot(new CoordinatesData(0, 0), "head");
         List<Knot> knots = new ArrayList<>();
         knots.add(head);
         for (int i = 0; i <= 8; i++) {
-            knots.add(new Knot(new CoordinatesData(0, 5), String.valueOf(i + 1)));
+            knots.add(new Knot(new CoordinatesData(0, 0), String.valueOf(i + 1)));
         }
         // System.out.println("Initial knots " + knots);
         String[] split = input.split("\n");
@@ -88,18 +88,30 @@ public class RopeSimulatorMultiTails {
         int toMove = count - 1;
         for (int i = 0; i <= toMove; i++) {
             Knot nextKnot = knots.get(0);
+            boolean hasCross = false;
             for (Knot knot : knots) {
                 if (isConnected(knot, nextKnot)) {
-                    break;
+                    continue;
                 }
-                if (knot.getY() == nextKnot.getY()) {
+                if (knot.getY() == nextKnot.getY() || knot.getY() + 1 == nextKnot.getY()) {
                     knot.moveX(movement, nextKnot.getY());
                 } else {
                     if (knot.getY() > nextKnot.getY()) {
-                        knot.moveX(movement, knot.getY() - 1);
+                        int y = knot.getY() - 1;
+                        if (hasCross) {
+                            knot.moveY(-1, nextKnot.getLastX());
+                        } else {
+                            knot.moveX(movement, y);
+                        }
                     } else {
-                        knot.moveX(movement, knot.getY() + 1);
+                        int y = knot.getY() + 1;
+                        if (hasCross) {
+                            knot.moveY(1, nextKnot.getLastX());
+                        } else {
+                            knot.moveX(movement, y);
+                        }
                     }
+                    hasCross = false;
                 }
                 nextKnot = knot;
             }
