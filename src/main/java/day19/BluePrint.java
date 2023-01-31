@@ -1,5 +1,7 @@
 package day19;
 
+import java.util.Set;
+
 public class BluePrint {
     private final String name;
     private final RobotCosts oreRobotCosts;
@@ -13,6 +15,10 @@ public class BluePrint {
         this.clayRobotCosts = clayRobotCosts;
         this.obsidianRobotCosts = obsidianRobotCosts;
         this.geodeRobotCosts = geodeRobotCosts;
+    }
+
+    public Set<RobotCosts> getAllRobotCosts() {
+        return Set.of(getOreRobotCost(), getClayRobotCosts(), getObsidianRobotCosts(), getGeodeRobotCosts());
     }
 
     public RobotCosts getOreRobotCost() {

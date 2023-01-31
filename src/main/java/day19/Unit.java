@@ -1,5 +1,5 @@
 package day19;
 
 public enum Unit {
-    ORE, OBSIDIAN, CLAY
+    ORE, OBSIDIAN, CLAY, GEODE
 }

@@ -5,54 +5,36 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class BluePrintParser {
-    private final Pattern BLUEPRINT = Pattern.compile("Blueprint (\\d+)");
-    private final Pattern ORE_ROBOT = Pattern.compile("Each ore robot costs (\\d+) ore.");
-    private final Pattern CLAY_ROBOT = Pattern.compile("Each clay robot costs (\\d+) ore.");
-    private final Pattern OBSIDIAN_ROBOT = Pattern.compile("Each obsidian robot costs (\\d+) ore and (\\d+) clay.");
-    private final Pattern GEODE_ROBOT = Pattern.compile("Each geode robot costs (\\d+) ore and (\\d+) obsidian.");
+    private final Pattern BLUEPRINT = Pattern.compile("Blueprint (\\d+): Each ore robot costs (\\d+) ore. Each clay robot costs (\\d+) ore. Each obsidian robot costs (\\d+) ore and (\\d+) clay. Each geode robot costs (\\d+) ore and (\\d+) obsidian.");
 
     public BluePrint parse(String input) {
-        String[] split = input.split("\n");
-        String blueprintName = getBluePrintName(split);
-        RobotCosts oreRobotCost = getOreRobotCosts(split);
-        RobotCosts clayRobotCosts = getClayRobotCosts(split);
-        RobotCosts obsidianCosts = getObsidianCosts(split);
-        RobotCosts geodeRobotCosts = getGeodeRobotCosts(split);
-        return new BluePrint(blueprintName, oreRobotCost, clayRobotCosts, obsidianCosts, geodeRobotCosts);
+        Matcher matcher = getBluePrintMatcher(input);
+        RobotCosts oreRobotCost = getOreRobotCosts(matcher);
+        RobotCosts clayRobotCosts = getClayRobotCosts(matcher);
+        RobotCosts obsidianCosts = getObsidianCosts(matcher);
+        RobotCosts geodeRobotCosts = getGeodeRobotCosts(matcher);
+        return new BluePrint(matcher.group(1), oreRobotCost, clayRobotCosts, obsidianCosts, geodeRobotCosts);
     }
 
-    private RobotCosts getGeodeRobotCosts(String[] split) {
-        String obsidianRobot = split[4];
-        Matcher matcher = GEODE_ROBOT.matcher(obsidianRobot);
-        matcher.find();
-        return new RobotCosts(Map.of(Unit.ORE, Integer.parseInt(matcher.group(1)), Unit.OBSIDIAN, Integer.parseInt(matcher.group(2))));
+    private RobotCosts getGeodeRobotCosts(Matcher matcher) {
+        return new RobotCosts(Map.of(Unit.ORE, Integer.parseInt(matcher.group(6)), Unit.OBSIDIAN, Integer.parseInt(matcher.group(7))), GeodeRoboter.INSTANCE);
     }
 
-    private RobotCosts getObsidianCosts(String[] split) {
-        String obsidianRobot = split[3];
-        Matcher matcher = OBSIDIAN_ROBOT.matcher(obsidianRobot);
-        matcher.find();
-        return new RobotCosts(Map.of(Unit.ORE, Integer.parseInt(matcher.group(1)), Unit.CLAY, Integer.parseInt(matcher.group(2))));
+    private RobotCosts getObsidianCosts(Matcher matcher) {
+        return new RobotCosts(Map.of(Unit.ORE, Integer.parseInt(matcher.group(4)), Unit.CLAY, Integer.parseInt(matcher.group(5))), ObsidianRobot.INSTANCE);
     }
 
-    private RobotCosts getClayRobotCosts(String[] split) {
-        String clayRobot = split[2];
-        Matcher matcher = CLAY_ROBOT.matcher(clayRobot);
-        matcher.find();
-        return new RobotCosts(Map.of(Unit.ORE, Integer.parseInt(matcher.group(1))));
+    private RobotCosts getClayRobotCosts(Matcher matcher) {
+        return new RobotCosts(Map.of(Unit.ORE, Integer.parseInt(matcher.group(3))), ClayRobot.INSTANCE);
     }
 
-    private RobotCosts getOreRobotCosts(String[] split) {
-        String oreRobot = split[1];
-        Matcher matcher = ORE_ROBOT.matcher(oreRobot);
-        matcher.find();
-        return new RobotCosts(Map.of(Unit.ORE, Integer.parseInt(matcher.group(1))));
+    private RobotCosts getOreRobotCosts(Matcher matcher) {
+        return new RobotCosts(Map.of(Unit.ORE, Integer.parseInt(matcher.group(2))), OreRobot.INSTANCE);
     }
 
-    private String getBluePrintName(String[] split) {
-        String bluePrint = split[0];
+    private Matcher getBluePrintMatcher(String bluePrint) {
         Matcher matcher = BLUEPRINT.matcher(bluePrint);
         matcher.find();
-        return matcher.group(1);
+        return matcher;
     }
 }
