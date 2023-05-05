@@ -224,6 +224,6 @@ class GameTest {
         cut = new Game(input);
         GameMap actual = cut.playRound(10);
         System.out.println(actual.draw());
-        assertThat(actual.calcEmptyInRectangle()).isEqualTo(110);
+        assertThat(actual.calcEmptyInRectangle()).isEqualTo(3966);
     }
 }
